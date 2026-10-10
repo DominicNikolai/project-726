@@ -57,14 +57,21 @@
 
   const uniforms = {
     u_time: { value: 0.0 },
-    u_resolution: { value: new Vector2(window.innerWidth * params.dpr, window.innerHeight * params.dpr) },
+    u_resolution: {
+      value: new Vector2(
+        window.innerWidth * params.dpr,
+        window.innerHeight * params.dpr
+      )
+    },
     u_camSpeed: { value: params.camSpeed },
     u_morphSpeed: { value: params.morphSpeed },
     u_iterations: { value: params.iterations },
     u_rot: { value: new Vector3(params.rotX, params.rotY, params.rotZ) },
     u_kMult: { value: params.kMult },
     u_clamp: { value: new Vector2(params.clampMin, params.clampMax) },
-    u_expand: { value: new Vector3(params.expandX, params.expandY, params.expandZ) },
+    u_expand: {
+      value: new Vector3(params.expandX, params.expandY, params.expandZ)
+    },
     u_thickness: { value: params.thickness },
     u_bounds: { value: params.bounds }
   };
@@ -227,37 +234,85 @@
 
   const gui = new GUI({ title: 'Scene Settings' });
 
-  gui.add(params, 'dpr', 0.1, 2.0, 0.1).name('Resolution (DPR)').onChange((v: number) => {
-    renderer.setPixelRatio(v);
-    onWindowResize();
-  });
+  gui
+    .add(params, 'dpr', 0.1, 2.0, 0.1)
+    .name('Resolution (DPR)')
+    .onChange((v: number) => {
+      renderer.setPixelRatio(v);
+      onWindowResize();
+    });
 
   const camFolder = gui.addFolder('Camera & Animation');
-  camFolder.add(params, 'camSpeed', 0.0, 1.0).name('Camera Speed').onChange((v: number) => uniforms.u_camSpeed.value = v);
-  camFolder.add(params, 'morphSpeed', 0.0, 3.0).name('Morph Speed').onChange((v: number) => uniforms.u_morphSpeed.value = v);
+  camFolder
+    .add(params, 'camSpeed', 0.0, 1.0)
+    .name('Camera Speed')
+    .onChange((v: number) => (uniforms.u_camSpeed.value = v));
+  camFolder
+    .add(params, 'morphSpeed', 0.0, 3.0)
+    .name('Morph Speed')
+    .onChange((v: number) => (uniforms.u_morphSpeed.value = v));
 
   const mathFolder = gui.addFolder('Fractal Math (KIFS)');
-  mathFolder.add(params, 'iterations', 1, 20, 1).name('Iterations').onChange((v: number) => uniforms.u_iterations.value = v);
-  mathFolder.add(params, 'rotX', 0.0, 6.28).name('Rotation X').onChange((v: number) => uniforms.u_rot.value.x = v);
-  mathFolder.add(params, 'rotY', 0.0, 6.28).name('Rotation Y').onChange((v: number) => uniforms.u_rot.value.y = v);
-  mathFolder.add(params, 'rotZ', 0.0, 6.28).name('Rotation Z').onChange((v: number) => uniforms.u_rot.value.z = v);
-  mathFolder.add(params, 'kMult', 1.0, 15.0).name('Multiplier').onChange((v: number) => uniforms.u_kMult.value = v);
-  mathFolder.add(params, 'clampMin', -2.0, 2.0).name('Clamp Min').onChange((v: number) => uniforms.u_clamp.value.x = v);
-  mathFolder.add(params, 'clampMax', 10.0, 100.0).name('Clamp Max').onChange((v: number) => uniforms.u_clamp.value.y = v);
+  mathFolder
+    .add(params, 'iterations', 1, 20, 1)
+    .name('Iterations')
+    .onChange((v: number) => (uniforms.u_iterations.value = v));
+  mathFolder
+    .add(params, 'rotX', 0.0, 6.28)
+    .name('Rotation X')
+    .onChange((v: number) => (uniforms.u_rot.value.x = v));
+  mathFolder
+    .add(params, 'rotY', 0.0, 6.28)
+    .name('Rotation Y')
+    .onChange((v: number) => (uniforms.u_rot.value.y = v));
+  mathFolder
+    .add(params, 'rotZ', 0.0, 6.28)
+    .name('Rotation Z')
+    .onChange((v: number) => (uniforms.u_rot.value.z = v));
+  mathFolder
+    .add(params, 'kMult', 1.0, 15.0)
+    .name('Multiplier')
+    .onChange((v: number) => (uniforms.u_kMult.value = v));
+  mathFolder
+    .add(params, 'clampMin', -2.0, 2.0)
+    .name('Clamp Min')
+    .onChange((v: number) => (uniforms.u_clamp.value.x = v));
+  mathFolder
+    .add(params, 'clampMax', 10.0, 100.0)
+    .name('Clamp Max')
+    .onChange((v: number) => (uniforms.u_clamp.value.y = v));
 
   const geoFolder = gui.addFolder('Fractal Geometry');
-  geoFolder.add(params, 'expandX', 0.0, 3.0).name('Expand X').onChange((v: number) => uniforms.u_expand.value.x = v);
-  geoFolder.add(params, 'expandY', 0.0, 3.0).name('Expand Y').onChange((v: number) => uniforms.u_expand.value.y = v);
-  geoFolder.add(params, 'expandZ', 0.0, 3.0).name('Expand Z').onChange((v: number) => uniforms.u_expand.value.z = v);
-  geoFolder.add(params, 'thickness', -5.0, 1.0).name('Ray Thickness').onChange((v: number) => uniforms.u_thickness.value = v);
-  geoFolder.add(params, 'bounds', 1.0, 10.0).name('Bounding Sphere').onChange((v: number) => uniforms.u_bounds.value = v);
+  geoFolder
+    .add(params, 'expandX', 0.0, 3.0)
+    .name('Expand X')
+    .onChange((v: number) => (uniforms.u_expand.value.x = v));
+  geoFolder
+    .add(params, 'expandY', 0.0, 3.0)
+    .name('Expand Y')
+    .onChange((v: number) => (uniforms.u_expand.value.y = v));
+  geoFolder
+    .add(params, 'expandZ', 0.0, 3.0)
+    .name('Expand Z')
+    .onChange((v: number) => (uniforms.u_expand.value.z = v));
+  geoFolder
+    .add(params, 'thickness', -5.0, 1.0)
+    .name('Ray Thickness')
+    .onChange((v: number) => (uniforms.u_thickness.value = v));
+  geoFolder
+    .add(params, 'bounds', 1.0, 10.0)
+    .name('Bounding Sphere')
+    .onChange((v: number) => (uniforms.u_bounds.value = v));
 
   gui.close();
 
   function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     const dpr = renderer.getPixelRatio();
-    uniforms.u_resolution.value.set(window.innerWidth * dpr, window.innerHeight * dpr);
+    uniforms.u_resolution.value.set(
+      window.innerWidth * dpr,
+      window.innerHeight * dpr
+    );
   }
   window.addEventListener('resize', onWindowResize);
 
